@@ -15,15 +15,29 @@ export function TaskList() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   function handleCreateNewTask() {
-    // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    if(newTaskTitle) {
+      setTasks([...tasks, {
+        id: tasks.length + 1,
+        title: newTaskTitle,
+        isComplete: false
+      }]);
+
+      setNewTaskTitle('');
+    }
   }
 
   function handleToggleTaskCompletion(id: number) {
-    // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    const updatedTasks = tasks.map((task) => {
+      if(task.id === id) {
+        task.isComplete = !task.isComplete;
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
   }
 
   function handleRemoveTask(id: number) {
-    // Remova uma task da listagem pelo ID
+    setTasks(tasks.filter((task) => task.id !== id));
   }
 
   return (
@@ -46,27 +60,32 @@ export function TaskList() {
 
       <main>
         <ul>
-          {tasks.map(task => (
-            <li key={task.id}>
-              <div className={task.isComplete ? 'completed' : ''} data-testid="task" >
-                <label className="checkbox-container">
-                  <input 
-                    type="checkbox"
-                    readOnly
-                    checked={task.isComplete}
-                    onClick={() => handleToggleTaskCompletion(task.id)}
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                <p>{task.title}</p>
-              </div>
-
-              <button type="button" data-testid="remove-task-button" onClick={() => handleRemoveTask(task.id)}>
-                <FiTrash size={16}/>
-              </button>
-            </li>
-          ))}
-          
+          {tasks.length ? (
+            tasks.map(task => (
+              <li key={task.id}>
+                <div className={task.isComplete ? 'completed' : ''} data-testid="task" >
+                  <label className="checkbox-container">
+                    <input 
+                      type="checkbox"
+                      readOnly
+                      checked={task.isComplete}
+                      onClick={() => handleToggleTaskCompletion(task.id)}
+                    />
+                    <span className="checkmark"></span>
+                  </label>
+                  <p>{task.title}</p>
+                </div>
+  
+                <button type="button" data-testid="remove-task-button" onClick={() => handleRemoveTask(task.id)}>
+                  <FiTrash size={16}/>
+                </button>
+              </li>
+            ))
+          ) : (
+            <section className="empty-state">
+              <p>Nenhuma task por aqui</p>
+            </section>
+          )}
         </ul>
       </main>
     </section>
