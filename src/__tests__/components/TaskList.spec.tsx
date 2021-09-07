@@ -128,4 +128,11 @@ describe('App Page', () => {
     expect(addedSecondTask).toBeInTheDocument();
     expect(addedSecondTask).not.toHaveClass('completed');
   })
+
+  it('should be able to show the empty state', () => {
+    render(<TaskList />);
+
+    const emptyStateMessage = screen.getByText('Nenhuma task por aqui');
+    expect(emptyStateMessage).toBeInTheDocument();
+  })
 })
