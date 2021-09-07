@@ -64,6 +64,16 @@ section.task-list {
   main {
     margin-top: 3rem;
 
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        color: rgba(0, 0, 0, 0.365);
+      }
+    }
+
     ul {
       list-style: none;
   
